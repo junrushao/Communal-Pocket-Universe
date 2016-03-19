@@ -1,0 +1,47 @@
+ALUReservationStation
+	ALUReservationStation.fetchIssue:
+		input ReorderBuffer.issue
+	ALUReservationStation.tryCalculate:
+		input ReorderBuffer.commonDataBus
+		output ReorderBuffer.writeBuffer
+	ALUReservationStation.reset: ignore
+
+LoadReservationStation
+	LoadReservationStation.fetchIssue
+		input ReorderBuffer.issue
+	LoadReservationStation.tryCalculate:
+		input ReorderBuffer.commonDataBus
+		output ReorderBuffer.writeBuffer
+	LoadReservationStation.reset: ignore
+
+StoreReservationStation
+	StoreReservationStation.fetchIssue
+		input ReorderBuffer.issue
+	StoreReservationStation.tryCalculate:
+		input ReorderBuffer.commonDataBus
+		output ReorderBuffer.writeBuffer
+	StoreReservationStation.reset: ignore
+
+RegisterFile
+	ReorderBuffer.issue
+
+RegisterStatusTable
+	ReorderBuffer.issue
+	ReorderBuffer.commit
+
+DataMemory
+	DataMemory.read
+		input LoadReservationStation.readDataMem
+	DataMemory.write
+		input ReorderBuffer.commit
+
+InstructionMemory
+	ReorderBuffer.issue
+
+ReorderBuffer
+	ReorderBuffer.commit
+	ReorderBuffer.writeBuffer
+	ReorderBuffer.issue
+	
+
+

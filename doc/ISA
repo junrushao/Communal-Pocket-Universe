@@ -1,0 +1,6 @@
+I: opcode(6) + rd(5) + rs(5) + immediate(16)
+	lw $rd, delta($rs)
+	sw $rd, delta($rs)
+	bge $rd, $rt, delta
+R: opcode(6) + rd(5) + rs(5) + rt(5) + ...
+

@@ -1,0 +1,73 @@
+// 接线描述
+
+ReorderBuffer:
+	input clk
+	input reset
+
+	reg[] pc, sPc, fPc
+	reg[] head, tail, size
+	reg<opcode, fu, destination reg, value to assign, fPC>[] reorderBuffer
+	reg[] resetBus
+	reg[] commonDataBus
+	reg[] issueBus
+	reg[] instruction
+	
+	wire[] opcode, rd, rs, rt, immediate
+	wire[] busyBus
+	wire[] positionOfWriteTasks, valueOfWriteTasks
+
+	reg[2] branchPredictor
+
+	定义 regsiterStatus = RegisterStatusTable 
+	定义 alu[] = ALUReservationStation
+	定义 load[] = LoadReservationStation
+	定义 store[] = StoreReservationStation
+	定义 iMem = InstructionMemory
+	定义 dMem = DataMemory
+
+
+ALUReservationStation:
+	input resetBus
+	input issueBus
+	input commonDataBus
+	output reg busy
+	output positionOfWriteTasks
+	output valueOfWriteTasks
+
+LoadReservationStation:
+	input resetBus
+	input issueBus
+	input commonDataBus
+	output reg busy
+	output positionOfWriteTasks
+	output valueOfWriteTasks
+	output reg dMem_readPtr
+	input dMem_readValue
+
+StoreReservationStation:
+	input resetBus
+	input issueBus
+	input commonDataBus
+	output reg busy
+	output positionOfWriteTasks
+	output valueOfWriteTasks
+	output storeValueOfWriteTasks
+
+InstructionMemory:
+	input readPtr
+	output readValue
+	input writePtr
+	input writeValue
+
+DataMemory:
+	input readPtr
+	output readValue
+	input writePtr
+	input writeValue
+
+RegisterStatusTable:
+	input readStatus
+	output readValue
+	input writeStatus, writeValue
+
+

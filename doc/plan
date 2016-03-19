@@ -1,0 +1,85 @@
+// 时序原则：在 posedge clk read、calc & feedback、issue, 在 negedge write、commit
+
+// 功能描述
+
+ReorderBuffer:
+	在每个 negedge clk:
+		while (RB 非空 && 队首的 value 不是 undefined)
+			若队首的元素为 branch
+				若 value 为 0 // 预测错误
+					pc = fPC
+					清空 RB
+					清空 RS
+				否则
+					啥事都不做
+			否则若队首是 store
+				写内存
+			否则
+				如果 RegisterStatus 中 reg of instruction 对应的 RS 是队首的 RS
+					把 RegisterStatus 中的 reg of instruction 清空
+					把 registers[reg] 的值赋为 value
+				否则
+					把 registers[reg] 的值赋为 value
+
+	在每个 posedge clk:
+		if RB 没满 // 看看能不能 issue 出新的指令
+			instruction = 查 icache 中 $pc 位置的 instruction
+			找 instruction 对应的 RS // 对于 Load 和 Store, 不能并存
+			if 找得到
+				解析指令
+				(解析完后) if 该指令为 branch
+					用 2-bit 法预测是否跳，设预测成功的话 nPC 为 sPC, 失败的话 nPC 为 fPC
+					RB 队列加入 <reg of instruction, undefined, fPC> 
+					pc = nPC
+					issue 出这条指令
+				else
+					RB 队列加入 <reg of instruction, undefined, undefined>
+					pc += 4
+					issue 出这条指令
+					RegisterStatus表里面的 rd 对应的 RS 改成这个 RS
+			else
+				没办法，啥都不做
+
+ALUReservationStation: // BranchReservationStation 也属于 ALUReservationStation
+	在每个 posedge clk:
+		if 不 busy:
+			if issueBus 要求自己算东西:
+				busy = 1
+				截获指令
+				分析指令并置 busy, vj, vk, qj, qk
+				如果 vj 跟 vk 都有定义了
+					算
+					把结果写到 ReorderBuffer 的 buffer 中
+					busy = 0
+				否则
+					没办法
+			else:
+				无事可做
+		else: // busy
+			check 一下 vj
+			check 一下 vk
+			如果 vj 跟 vk 都有定义了
+				算
+				把结果写到 ReorderBuffer 的 buffer 中
+				busy = 0
+			否则
+				没办法，等等吧
+
+	task check q 和 v:
+		if q 不为空 且 commonDataBus 的指定段有数据: // 已经 ready
+			读数据, 改 q、v
+
+LoadReservationStation:
+	跟 ALUReservationStation 类似, 多一步读
+
+StoreReservationStation:
+	跟 ALUReservationStation 类似, 多一步写
+
+Registers:
+	随时提供读和写这两种高端服务
+
+RegisterStatusTable:
+	随时提供随时读写 status 服务
+	随时提供随时读写 register 服务
+
+

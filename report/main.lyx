@@ -1,0 +1,1593 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\begin_preamble
+\DeclareRobustCommand\nobreakspace{\leavevmode\nobreak\ }
+\usepackage{ctex}
+\usepackage{authblk}
+\usepackage{environ}
+\usepackage{tikz}
+\usetikzlibrary{calc,matrix}
+\usepackage{CJKulem}
+
+\newcommand{\sol}{\noindent\textsl{Sol.}}
+\renewcommand{\abstractname}{Abstract}
+\renewcommand{\contentsname}{Contents}
+\renewcommand{\refname}{References}
+
+\makeatletter
+\let\matamp=&
+\catcode`\&=13
+\makeatletter
+\def&{\iftikz@is@matrix
+  \pgfmatrixnextcell
+  \else
+  \matamp
+  \fi}
+\makeatother
+
+\newcounter{lines}
+\def\endlr{\stepcounter{lines}\\}
+
+\newcounter{vtml}
+\setcounter{vtml}{0}
+
+\newif\ifvtimelinetitle
+\newif\ifvtimebottomline
+\tikzset{description/.style={
+  column 2/.append style={#1}
+ },
+ timeline color/.store in=\vtmlcolor,
+ timeline color=red!80!black,
+ timeline color st/.style={fill=\vtmlcolor,draw=\vtmlcolor},
+ use timeline header/.is if=vtimelinetitle,
+ use timeline header=false,
+ add bottom line/.is if=vtimebottomline,
+ add bottom line=false,
+ timeline title/.store in=\vtimelinetitle,
+ timeline title={},
+ line offset/.store in=\lineoffset,
+ line offset=4pt,
+}
+
+\NewEnviron{vtimeline}[1][]{%
+\setcounter{lines}{1}%
+\stepcounter{vtml}%
+\begin{tikzpicture}[column 1/.style={anchor=east},
+ column 2/.style={anchor=west},
+ text depth=0pt,text height=1ex,
+ row sep=1ex,
+ column sep=1em,
+ #1
+]
+\matrix(vtimeline\thevtml)[matrix of nodes]{\BODY};
+\pgfmathtruncatemacro\endmtx{\thelines-1}
+\path[timeline color st] 
+($(vtimeline\thevtml-1-1.north east)!0.5!(vtimeline\thevtml-1-2.north west)$)--
+($(vtimeline\thevtml-\endmtx-1.south east)!0.5!(vtimeline\thevtml-\endmtx-2.south west)$);
+\foreach \x in {1,...,\endmtx}{
+ \node[circle,timeline color st, inner sep=0.15pt, draw=white, thick] 
+ (vtimeline\thevtml-c-\x) at 
+ ($(vtimeline\thevtml-\x-1.east)!0.5!(vtimeline\thevtml-\x-2.west)$){};
+ \draw[timeline color st](vtimeline\thevtml-c-\x.west)--++(-3pt,0);
+ }
+ \ifvtimelinetitle%
+  \draw[timeline color st]([yshift=\lineoffset]vtimeline\thevtml.north west)--
+  ([yshift=\lineoffset]vtimeline\thevtml.north east);
+  \node[anchor=west,yshift=16pt,font=\large]
+   at (vtimeline\thevtml-1-1.north west) 
+   {\textsc{Timeline \thevtml}: \textit{\vtimelinetitle}};
+ \else%
+  \relax%
+ \fi%
+ \ifvtimebottomline%
+   \draw[timeline color st]([yshift=-\lineoffset]vtimeline\thevtml.south west)--
+  ([yshift=-\lineoffset]vtimeline\thevtml.south east);
+ \else%
+   \relax%
+ \fi%
+\end{tikzpicture}
+}
+
+
+
+\author{\kaishu 邵俊儒 \thanks{Student ID:5130309028.} \ \  陈昕昀 \thanks{Student ID:5130309066.} }
+\affil{\small{ACM Honored Class\\ Zhiyuan College \\ Shanghai Jiao Tong University} }
+\date{}
+\end_preamble
+\options UTF8
+\use_default_options true
+\begin_modules
+theorems-ams-bytype
+theorems-ams-extended-bytype
+customHeadersFooters
+\end_modules
+\maintain_unincluded_children false
+\language chinese-simplified
+\language_package none
+\inputencoding utf8-plain
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format pdf4
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 11
+\spacing single
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder true
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 2.7cm
+\topmargin 2.7cm
+\rightmargin 2.7cm
+\bottommargin 2.7cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle fancy
+\listings_params "basicstyle={\ttfamily\small},breaklines=true,commentstyle={\color{red!50!green!50!blue!50}},escapeinside={``},extendedchars=false,frame=single,keywordstyle={\color{blue!70}},language=C,numbers=left,rulesepcolor={\color{red!20!green!20!blue!20}},xleftmargin={2.0em},xrightmargin={2.0em}"
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Left Header
+Communal Pocket Universe
+\end_layout
+
+\begin_layout Right Header
+邵俊儒
+\begin_inset space \enskip{}
+\end_inset
+
+陈昕昀
+\end_layout
+
+\begin_layout Title
+
+\series bold
+Communal Pocket Universe
+\begin_inset Newline newline
+\end_inset
+
+
+\size large
+A Simple CPU Implementing Tomasulo's Algorithm with Reorder Buffer
+\end_layout
+
+\begin_layout Abstract
+In the first section, we would describe in outline the design of our CPU.
+ In the second section, we would introduce each unit or module and its utility
+ respectively.
+ As structural and memory hazards happen frequently at runtime, the third
+ section gives a solution we use to resolve problems that might occur, which
+ is mainly based on schedule arrangement.
+ To avoid annoying conditions in the original MIPS instruction set, we defined
+ our own MIPS-like ISA.
+ We will talk about it in the fourth section.
+ We would talk something about design philosophy in the fifth section.
+ Collaboration is the most enjoyable part in this project, we present collaborat
+ion division in the sixth section.
+ In the end, we would like to thank people who generously gave us warm help.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace*{
+\backslash
+stretch{0.382}} 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace*{
+\backslash
+stretch{0.618}} 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+This is a report for the final project of course MS108, computer system
+ I.
+ We implement an out-of-order execution algorithm with reorder buffer, a
+ direct mapping instruction cache and a direct mapping data cache.
+ In addition, we design an ISA on our own.
+\end_layout
+
+\begin_layout Standard
+Our verilog program needs iverilog >= 0.10.0, Ubuntu >= 14.04, JRE: Oracle
+ JRE >= 1.8.
+\end_layout
+
+\begin_layout Standard
+The figure below shows the internal architecture of our CPU.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename architecture.PNG
+	scale 40
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+As we all know, a control center is indispensable for a CPU.
+ In our implementation of Tomasulo's Algorithm, the control center is integrated
+ in the module reorder buffer.
+ The reorder buffer communicates with all other modules.
+ More specifically:
+\end_layout
+
+\begin_layout Standard
+The reorder buffer has 4 sets of wires connected with ALU reservation station,
+ issue bus to send instruction to a certain reservation station, common
+ data bus, and a wire back indicating the reservation station is busy, a
+ set of wires back to notify the control center to modify reorder buffer.
+\end_layout
+
+\begin_layout Standard
+The reorder buffer also has 4 sets of wires connected with store reservation
+ station, same as described above.
+\end_layout
+
+\begin_layout Standard
+The reorder buffer also has 4 sets of wires connected with load reservation
+ station, same as described above.
+ However, there is another set of wires connecting data cache and load reservati
+on stations, letting the reservation stations read data from data cache.
+\end_layout
+
+\begin_layout Standard
+The reorder buffer also connects with register file, register status table,
+ data cache and instruction cache, which allows it read or write the correspondi
+ng module.
+\end_layout
+
+\begin_layout Section
+Unit Design and Utility
+\end_layout
+
+\begin_layout Subsection
+Parameters
+\end_layout
+
+\begin_layout Standard
+Global parameters are defined in ``Utility.v'' , including size of cache,
+ size of reorder buffer, number of function units, opcode of instructions,
+ and delay of memory access.
+\end_layout
+
+\begin_layout Subsection
+Register File
+\end_layout
+
+\begin_layout Standard
+Our register file provides two input wires for querying the value of a given
+ register, and a single wire for writing a register.
+ All reading and writing operations are responded immediately.
+\end_layout
+
+\begin_layout Standard
+Hazards may exist when reading and writing the same register at the same
+ time, which could be avoided using slickly designed schedule arrangement.
+\end_layout
+
+\begin_layout Subsection
+Register Status Table
+\end_layout
+
+\begin_layout Standard
+Typical Tomasulo's Algorithm uses register status table to record which
+ function unit are being used to calculate each register.
+ However, with a reorder buffer, we modify this algorithm using this table
+ to record which cell in reorder buffer the register is waiting for.
+\end_layout
+
+\begin_layout Standard
+Two queries can be done simultaneously using two separate input wires, but
+ only one writing wire is provided.
+ Like register file, these services are done at any time and possible hazards
+ could be resolved with a good arrangement.
+\end_layout
+
+\begin_layout Subsection
+ALU Reservation Station
+\end_layout
+
+\begin_layout Standard
+A certain ALU reservation station could only do a certain kind of ALU operation,
+ like adding or multiplying two numbers.
+\end_layout
+
+\begin_layout Standard
+The ALU reservation station generally has two functions: fetch issue and
+ do calculation.
+\end_layout
+
+\begin_layout Standard
+In function fetch issue, the reservation station fetchs the instruction
+ in the issue stage.
+\end_layout
+
+\begin_layout Standard
+In function do calculation, the reservation station checks whether operands
+ are ready; if so, the reservation station does corresponding calculation,
+ and then sends a signal to reorder buffer controller for writing the result
+ to common data bus.
+\end_layout
+
+\begin_layout Subsection
+Load Reservation Station
+\end_layout
+
+\begin_layout Standard
+Like ALU Reservation Station, a load reservation station has two similar
+ functions.
+ A load reservation station is essentially an add reservation station, because
+ we should calculate the offset in instructions like ``lw $t0, 3($sp)''.
+\end_layout
+
+\begin_layout Standard
+The difference is that each load reservation station has a permission, in
+ other words, a set of wires connected to the data cache for reading data.
+\end_layout
+
+\begin_layout Standard
+In function fetch issue, the reservation station fetchs the instruction
+ in the issue stage.
+\end_layout
+
+\begin_layout Standard
+In function do calculation, the reservation station checks whether the source
+ address is ready; if so, the reservation station does add operation with
+ the source address and offset, reads out data needed from cache, and then
+ sends a signal to reorder buffer controller for writing the result to common
+ data bus.
+\end_layout
+
+\begin_layout Subsection
+Store Reservation Station
+\end_layout
+
+\begin_layout Standard
+Also like reservation station, a store reservation station has two similar
+ functions.
+ A store reservation station is inherently an add reservation station as
+ well.
+\end_layout
+
+\begin_layout Standard
+The difference is that store reservation station has three operands, for
+ instructions like ``sw $a, b($c)'', $a, $c are two registers we are awaiting,
+ and b is also an operand.
+ Unlike load reservation station, any store reservation station has no access
+ to either data cache or data memory.
+ Any writing to data memory could only occur in commit stage.
+\end_layout
+
+\begin_layout Standard
+In function fetch issue, the reservation station fetchs the instruction
+ in the issue stage.
+\end_layout
+
+\begin_layout Standard
+In function do calculation, the reservation station checks whether the target
+ address is ready; if so, the reservation station does add operation with
+ target address and offset, reads out data to be written in register file
+ and common data bus, and then sends a signal to reorder buffer controller
+ for writing the result back to cache.
+\end_layout
+
+\begin_layout Subsection
+Instruction Cache
+\end_layout
+
+\begin_layout Standard
+Our instruction cache uses a set of input wires to read a given address
+ and outputs the corresponding instruction after some time of delay.
+ It does not support memory writing, because instructions could not be modified
+ at runtime.
+\end_layout
+
+\begin_layout Standard
+Thus, the cache only has one major function: memory read.
+ In this function, the cache checks whether a cache miss occurs, waits for
+ delay and returns the instruction.
+\end_layout
+
+\begin_layout Subsection
+Data Cache
+\end_layout
+
+\begin_layout Standard
+Our data cache uses three set of input wires in order to read three addresses
+ at the same time, and outputs the corresponding data after some time of
+ delay.
+ It also provides a set of wires for writing.
+ Because the delay time is uncertain, we use wires readSuccess and writeSuccess
+ to indicate whether the operation is done.
+\end_layout
+
+\begin_layout Standard
+Thus, the cache has two major functions: memory read and memory write.
+\end_layout
+
+\begin_layout Standard
+In function memory read, the cache checks whether a cache miss occurs, waits
+ for delay and returns the corresponding data.
+\end_layout
+
+\begin_layout Standard
+In function memory write, the cache checks whether a cache miss occurs,
+ waits for delay and writes the corresponding address.
+\end_layout
+
+\begin_layout Subsection
+Reorder Buffer
+\end_layout
+
+\begin_layout Standard
+Reorder buffer is the most complicated module in our CPU.
+ For convenience and lower expense of wires, three stages out of four are
+ executed in this module.
+ Reorder buffer includes the following functions:
+\end_layout
+
+\begin_layout Standard
+The function issue: Does the same thing as the issue stage in typical Tomasulo's
+ Algorithm.
+\end_layout
+
+\begin_layout Standard
+The function write buffer: Does the same thing as write back stage in typical
+ Tomasulo's Algorithm.
+\end_layout
+
+\begin_layout Standard
+The function commit: Does the same thing as commit stage in typical Tomasulo's
+ Algorithm.
+\end_layout
+
+\begin_layout Standard
+The function fetch instruction: Fetches the instruction from instruction
+ cache.
+\end_layout
+
+\begin_layout Section
+Schedule Arrangement
+\end_layout
+
+\begin_layout Standard
+Modules depend on each other, which means that hazards are easy to occur,
+ such as reading and writing one register at the same time.
+ Therefore, a robust schedule is keenly needed.
+ The picture below is the timeline we use which resolves all scheduling
+ hazards.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vskip 4ex
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{center}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{vtimeline}[description={text width=7cm}, row sep=4ex]
+\end_layout
+
+\begin_layout Plain Layout
+
+posedge clk & read instruction cache, issue 
+\backslash
+endlr
+\end_layout
+
+\begin_layout Plain Layout
+
+0.1 & fetch issue 
+\backslash
+endlr
+\end_layout
+
+\begin_layout Plain Layout
+
+0.2 & do ALU calculation, read data cache 
+\backslash
+endlr
+\end_layout
+
+\begin_layout Plain Layout
+
+0.5 & clear CDB, then write reorder buffer and CDB 
+\backslash
+endlr
+\end_layout
+
+\begin_layout Plain Layout
+
+0.6 & commit, write data memory 
+\backslash
+endlr
+\end_layout
+
+\begin_layout Plain Layout
+
+0.8 & shutdown signals 
+\backslash
+endlr
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{vtimeline}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{center}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Self-designed Instruction Set Architecture
+\end_layout
+
+\begin_layout Standard
+The architecture we designed is a kind of MIPS-like ISA.
+ As we all know, MIPS instructions are defined in three types, R-type, I-type
+ and J-type.
+ Our instructions are defined in two types: R-type and I-type.
+ The two tables below describes instructions we support.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="4">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Instruction
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Type
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Opcode[31 : 26]
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+rd[25 : 21], rs[20 : 16], rt[15 : 11]
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+add
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+R
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+000000
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+$rd = $rs + $rt
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+sub
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+R
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+000010
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+$rd = $rs - $rt
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+mul
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+R
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+000100
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+$rd = $rs * $rt
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+shl
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+R
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+001000
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+$rd = $rs >> $rt
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+shr
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+R
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+001001
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+$rd = $rs << $rt
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="4">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Instruction
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Type
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Opcode[31 : 26]
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+rd[25 : 21], rs[20 : 16], immediate[15 : 0]
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+addi
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+I
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+000001
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+$rd = $rs + immediate
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+subi
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+I
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+000011
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+$rd = $rs - immediate
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+lw
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+I
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+000101
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+load memory address ($rs + immediate) to $rd
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+sw
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+I
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+000110
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+store $rd to memory address ($rs + immediate)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+bge
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+I
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+000111
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+if $rd >= $rs, then PC = PC + immediate
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+There is another instruction halt(00101000000000000000000000000000) used
+ for terminating the program.
+\end_layout
+
+\begin_layout Section
+Design Philosophy
+\end_layout
+
+\begin_layout Subsection
+From C++ to Verilog
+\end_layout
+
+\begin_layout Standard
+As we all know, Verilog is a funny language, which supports nearly none
+ feature of a high-level language.
+ For this reason, coding in Verilog is a great challenge for normal programmers.
+ In our philosophy, a simple restricted C++ program could be translated
+ to Verilog.
+\end_layout
+
+\begin_layout Standard
+In one sentence, an input of a method could be viewed as an input wire,
+ and an outcome of a method could be considered as an output wire.
+\end_layout
+
+\begin_layout Standard
+Take the C++ program below as an example:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language={C++}"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+class Example {
+\end_layout
+
+\begin_layout Plain Layout
+
+	unsigned int a;
+\end_layout
+
+\begin_layout Plain Layout
+
+	unsigned int f() {
+\end_layout
+
+\begin_layout Plain Layout
+
+		return a;
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+	void g(unsigned int c) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		a = c;
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+};
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This can be translated to the Verilog module below:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Verilog"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+module Example(fEnable, fReturn, gEnable, gC);
+\end_layout
+
+\begin_layout Plain Layout
+
+	input wire fEnable;
+\end_layout
+
+\begin_layout Plain Layout
+
+	output reg[31: 0] fReturn;
+\end_layout
+
+\begin_layout Plain Layout
+
+	input wire gEnable;
+\end_layout
+
+\begin_layout Plain Layout
+
+	input wire[31: 0] gC;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	reg[31: 0] a;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	always @ (posedge fEnable)
+\end_layout
+
+\begin_layout Plain Layout
+
+	begin: functionF
+\end_layout
+
+\begin_layout Plain Layout
+
+		fReturn = a;
+\end_layout
+
+\begin_layout Plain Layout
+
+	end
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	always @ (posedge gEnable)
+\end_layout
+
+\begin_layout Plain Layout
+
+	begin: functionG
+\end_layout
+
+\begin_layout Plain Layout
+
+		a = gC;
+\end_layout
+
+\begin_layout Plain Layout
+
+	end
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+endmodule
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+How to Arrange a Schedule
+\end_layout
+
+\begin_layout Standard
+Schedule arrangement can be abstracted into a typical graph scheduling problem.
+\end_layout
+
+\begin_layout Standard
+If two functions cannot be operate at the same time, we add an edge in the
+ interference graph between the two nodes representing these two functions.
+ Although graph coloring is NP-Complete problem, in CPU design, the problem
+ size is small enough to calculate even by human.
+\end_layout
+
+\begin_layout Standard
+To avoid too much interference, in our CPU, we abide a philosophy that one
+ module should be used by other modules as least as possible.
+\end_layout
+
+\begin_layout Section
+Collaboration Division
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="2">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Task
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Author
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+code
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+邵俊儒 & 陈昕昀
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+debug
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+陈昕昀
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+testbench
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+陈昕昀
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+assembler
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+邵俊儒
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+report
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+邵俊儒 & 陈昕昀
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Acknowlegements
+\end_layout
+
+\begin_layout Standard
+We first have to thank Prof.
+ Xiaoyao Liang for bringing us such a wonderful course.
+\end_layout
+
+\begin_layout Standard
+We also have to thank our TA, Ran Ye, for his hard work and warm devotion.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "1"
+key "key-1"
+
+\end_inset
+
+ Xiaoyao Liang.
+ Slides of Computer System I.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "2"
+key "key-2"
+
+\end_inset
+
+John L.
+ Hennessy, David A.
+ Patterson.
+ Computer Architecture: A Quantitative Approach.
+ 5th edition.
+ Morgan Kaufmann Publisher.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "2"
+key "key-3"
+
+\end_inset
+
+ David A.
+ Patterson, John L.
+ Hennessy.
+ Computer Organization and Design: The Hardware / Software Interface.
+ 5th edition.
+ Morgan Kaufmann Publisher.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "3"
+key "key-4"
+
+\end_inset
+
+ Deepak Kumar Tala.
+ Verilog Tutorial.
+ 
+\begin_inset CommandInset href
+LatexCommand href
+target "http://www.asic-world.com/verilog/veritut.html"
+
+\end_inset
+
+.
+\end_layout
+
+\end_body
+\end_document

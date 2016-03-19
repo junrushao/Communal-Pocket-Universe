@@ -1,0 +1,19 @@
+posedge clk
+
+delta = 0.0 cycle
+	issue
+	instruction memory read
+delta = 0.1 cycle
+	fetch issue
+delta = 0.2 cycle
+	calculate
+	data memory read
+delta = 0.5 cycle
+	clear CDB
+	write reorder buffer & CDB
+delta = 0.6 cycle
+	commit
+	data memory write
+delta = 0.8 cycle
+	shutdown signals
+

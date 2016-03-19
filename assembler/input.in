@@ -1,0 +1,21 @@
+
+// $s0 -- i
+// $s1 -- sum
+// $t0 -- *$s0
+// $t1 -- 99
+
+addi $t1, $0, 99
+
+loop:
+
+lw $t0, 0($s0)
+add $s1, $s1, $t0
+addi $s0, $s0, 1
+
+bge $t1, $s0, loop
+
+sw $s1, 100($0)
+lw $t1, 100($0)
+
+halt
+
